@@ -3,6 +3,7 @@
 #include <sys/user.h>
 #include <ringbuffer.h>
 #include <assert.h>
+#include <stdio.h>
 
 int ringbuffer_init(struct ringbuffer *b, size_t size, bool roundup_ok) {
   int err;
@@ -20,6 +21,13 @@ int ringbuffer_init(struct ringbuffer *b, size_t size, bool roundup_ok) {
   if (b->buf == NULL) return -1;
   
   if (remap_file_pages(b->buf+size, size, 0, size/PAGE_SIZE, 0)) goto unmap;
+  
+  *(char *)b->buf = 0x42;
+  if (*((char *)b->buf+size) != 0x42) {
+    fprintf(stderr, "ERROR: SOMETHING BORKED UP THE RINGBUFFER!\n");
+    assert(0);
+  }
+  *(char *)b->buf = 0;
   
   return 0;
   
