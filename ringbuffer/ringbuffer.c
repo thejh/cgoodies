@@ -20,7 +20,7 @@ int ringbuffer_init(struct ringbuffer *b, size_t size, bool roundup_ok) {
   b->start = b->buf = mmap(NULL, size*2, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
   if (b->buf == NULL) return -1;
   
-  if (remap_file_pages(b->buf+size, size, 0, size/PAGE_SIZE, 0)) goto unmap;
+  if (remap_file_pages(b->buf, size, 0, size/PAGE_SIZE, 0)) goto unmap;
   
   *(char *)b->buf = 0x42;
   if (*((char *)b->buf+size) != 0x42) {
