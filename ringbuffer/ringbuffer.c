@@ -43,3 +43,7 @@ void ringbuffer_bump_neg(struct ringbuffer *b, size_t bumpsize) {
   b->start = b->start - bumpsize;
   if (b->start < b->buf) b->start += b->size;
 }
+
+void *ringbuffer_get_backread_ptr(struct ringbuffer *b) {
+  return b->start + b->size;
+}

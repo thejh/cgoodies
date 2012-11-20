@@ -11,3 +11,4 @@ int ringbuffer_init(struct ringbuffer *b, size_t size, bool roundup_ok);
 int ringbuffer_destroy(struct ringbuffer *b);
 void ringbuffer_bump(struct ringbuffer *b, size_t bumpsize);
 void ringbuffer_bump_neg(struct ringbuffer *b, size_t bumpsize);
+void *ringbuffer_get_backread_ptr(struct ringbuffer *b);
